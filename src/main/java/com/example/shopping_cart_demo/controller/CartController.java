@@ -19,6 +19,15 @@ public class CartController {
     @Autowired
     private CartManager cartManager;
 
+    @RequestMapping("")
+    public String cart(HttpSession session, Model model){
+        Cart cart = cartManager.getCart(session);
+        List<CartItem> cartItems = cart.getItems();
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("total", cart.getTotal());
+        return "cart";
+    }
+    
     @RequestMapping("/add")
     public String add(HttpSession session, @RequestParam("id") Product product,
                       @RequestParam(value = "qty", required = false, defaultValue = "1") int qty){
